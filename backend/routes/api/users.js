@@ -16,6 +16,8 @@ router.post(
       const user = await User.create({ email, username, hashedPassword });
   
       const safeUser = {
+        firstName: user.firstName,
+        lastName: user.firstName,
         id: user.id,
         email: user.email,
         username: user.username,

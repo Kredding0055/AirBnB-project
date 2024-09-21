@@ -9,6 +9,7 @@
     "start": "per-env",
     "start alt": "node -r dotenv/config ./bin/www",
     "start:development": "nodemon ./bin/www",
+    "start alt": "node -r dotenv/config ./bin/www",
     "start:production": "node ./bin/www",
     "build": "node psql-setup-script.js"
   },

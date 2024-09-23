@@ -38,28 +38,20 @@ const validateSignup = [
     handleValidationErrors
   ];
 
-// // Sign up
-// router.post(
-//     '/',
-//     async (req, res) => {
-//       const { email, password, username } = req.body;
-//       const hashedPassword = bcrypt.hashSync(password);
-//       const user = await User.create({ email, username, hashedPassword });
-  
-//       const safeUser = {
-//         id: user.id,
-//         email: user.email,
-//         username: user.username,
-//       };
-  
-//       await setTokenCookie(res, safeUser);
-  
-//       return res.json({
-//         user: safeUser
-//       });
-//     }
-//   );
 
+router.get('/:id', async (req, res, next) => {
+  const userById = await User.findByPk(req.params.id);
+  console.log(userById)
+  if(userById){
+  res.status(200);
+  res.json({user:userById});
+  } else {
+  res.status(200);
+  res.json({user: null});
+  }
+});
+
+//validate user creation
   router.post(
     '/',
     validateSignup,
@@ -79,7 +71,6 @@ const validateSignup = [
       };
   
       await setTokenCookie(res, safeUser);
-      console.log('test:', req.body)
       return res.json({
         user: safeUser
       });

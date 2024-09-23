@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    // "airbnb-project": "file:..",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
@@ -28,7 +27,6 @@
     "express-validator": "^7.2.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    // "mod4-project-airbnb": "file:..",
     "morgan": "^1.10.0",
     "per-env": "^1.0.2",
     "pg": "^8.13.0",
@@ -39,6 +37,5 @@
     "dotenv-cli": "^7.4.2",
     "nodemon": "^3.1.7",
     "sqlite3": "^5.1.7"
-  },
-  "description": ""
+ }
 }

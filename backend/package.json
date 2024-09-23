@@ -28,7 +28,7 @@
     "express-validator": "^7.2.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mod4-project-airbnb": "file:..",
+    // "mod4-project-airbnb": "file:..",
     "morgan": "^1.10.0",
     "per-env": "^1.0.2",
     "pg": "^8.13.0",

@@ -66,9 +66,9 @@ const validateSignup = [
     async (req, res) => {
 
     console.log("REQ BODY: ", req.body)
-      const { email, password, username } = req.body;
+      const { email, password, username, firstName, lastName } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
-      const user = await User.create({ email, username, hashedPassword });
+      const user = await User.create({ firstName, lastName,email, username, hashedPassword  });
   
       const safeUser = {
         firstName: user.firstName,

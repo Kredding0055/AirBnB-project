@@ -10,5 +10,7 @@ npx dotenv sequelize-cli db:seed:all
 npx dotenv sequelize-cli db:seed:undo # rollback one seed 
 npx dotenv sequelize-cli db:seed:undo:all # rollback all seeds
 
-npx sequelize-cli model:generate --name spot --attributes ownerId:integer,address:string,city:string,state:string,country:string,
+npx sequelize-cli model:generate --name Spots --attributes address:string,city:string,state:string
+
+,country:string,
 lat:decimal,long:decimal,name:string,description:string,price:decimal,createdAt:date,updatedAt:date

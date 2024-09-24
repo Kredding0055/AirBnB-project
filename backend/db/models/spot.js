@@ -3,7 +3,7 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class spot extends Model {
+  class Spot extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,11 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  spot.init({
-    ownerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
+  Spot.init({
     address: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -55,16 +51,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'spot',
-    defaultScope: {
-      attributes: {
-        exclude: ['createdAt', 'updatedAt'],
-      }
-    },
   });
-  return spot;
+  return Spot;
 };

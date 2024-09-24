@@ -13,8 +13,6 @@ module.exports = {
       },
       ownerId: {
         type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
         allowNull: false
       },
       address: {

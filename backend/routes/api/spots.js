@@ -7,11 +7,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { Spot } = require('../../db/models');
 
 
-router.get('/:id', async (req, res, next) => {
-    const spotId = await Spot.findByPk(req.params.id);
-    console.log(req.params.id)
-    
-})
+
 
 //create spot middleware
 const validateSpot = [
@@ -46,7 +42,7 @@ const validateSpot = [
 ];
 
 //create a spot
-router.post('/test', validateSpot, async (req, res,) => {
+router.post('/', validateSpot, async (req, res,) => {
     console.log(req.body)
     //get all info from req body
     const {address, city, state, country, name, description, lat, lng, price} = req.body;
@@ -65,7 +61,6 @@ router.post('/test', validateSpot, async (req, res,) => {
 
     res.status(201)
     res.json(newSpot)
-
 })
 
 router.get('/test3', async (req,res) => {
@@ -90,4 +85,10 @@ fetch('/api/users', {
     })
   }).then(res => res.json()).then(data => console.log(data));
 */
+router.get('/:id', async (req, res, next) => {
+  const spotId = await Spot.findByPk(req.params.id);
+  console.log(req.params.id)
+  
+})
+
 module.exports = router;

@@ -77,31 +77,47 @@ router.post('/other', validateSpot, async (req, res,) => {
 
 /************************************************************************************************************************************************/
 
-//*test url
-//import the model
-const {testfile2}=require('../../db/models');
-//set up url
-router.post('/test1',requireAuth, async (req,res) => {
-    console.log(req.body)
-    // authenticate 
+// //*test url
+// //import the model
+// const {testfile2}=require('../../db/models');
+// //set up url
+// router.post('/test1',requireAuth, async (req,res) => {
+//     console.log(req.body)
+//     // authenticate 
 
-    //grab data from res body
-    const {message} = req.body
+//     //grab data from res body
+//     const {message} = req.body
 
-    //error code
-    if(!message){
-      res.status(400)
-      res.json({error: "invalid message"})
-    }    
+//     //error code
+//     if(!message){
+//       res.status(400)
+//       res.json({error: "invalid message"})
+//     }    
 
-    //create new instance of class
-    const newTest = await testfile2.create({
-      message
-    })
+//     //create new instance of class
+//     const newTest = await testfile2.create({
+//       message
+//     })
 
-    //send response
-    res.status(200)
-    res.json(newTest)
+//     //send response
+//     res.status(200)
+//     res.json(newTest)
+// })
+/************************************************************************************************************************************************ */
+//*                                     GET DETAILS OF A SPOT FROM AN ID
+/************************************************************************************************************************************************/
+
+
+router.get('/:id', async (req, res, next) => {
+  const spotId = await Spot.findByPk(req.params.id);
+  // console.log("SPOT SPOT SPOT SPOT SPOT ", spotId)
+  if(spotId) {
+      res.json(spotId)
+  }
+  else {
+      res.json({"message": "Spot couldn't be found"});
+      res.status(404);
+  } 
 })
 
 router.get('/', async (req, res, next) => {
@@ -122,17 +138,6 @@ fetch('/api/spots/test1', {
   }).then(res => res.json()).then(data => console.log(data));
 */
 
-/************************************************************************************************************************************************ */
-//*                                     GET DETAILS OF A SPOT FROM AN ID
-/************************************************************************************************************************************************/
 
-router.get('/:id', async (req, res, next) => {
-  const spotId = await Spot.findByPk(req.params.id);
-  console.log(req.params.id)
-  
-  res.json(spotId)
-})
-
-/************************************************************************************************************************************************/
 
 module.exports = router;

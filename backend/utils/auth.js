@@ -1,16 +1,22 @@
-// backend/utils/auth.js
+/************************************************************************************************************************************************ */
+//*                                     IMPORTS AND REQUIREMENTS
+/************************************************************************************************************************************************/
+
+//imports the 'jsonwebtoken' library, used to create and verify JWTs
 const jwt = require('jsonwebtoken');
+// imports a 'jwtConfig' object from config/database.js which connects to .env variables
 const { jwtConfig } = require('../config');
+//gets secret and experation date of JWT token, both are in .env file
+const { secret, expiresIn } = jwtConfig;
+//imports user model
 const { User } = require('../db/models');
 
-const { secret, expiresIn } = jwtConfig;
+/************************************************************************************************************************************************ */
+//*                                     SEND A JWT COOKIE
+/************************************************************************************************************************************************/
 
-// backend/utils/auth.js
-// ...
-
-// Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
-  // Create the token.
+  // Create the token
   const safeUser = {
     id: user.id,
     email: user.email,
@@ -35,8 +41,9 @@ const setTokenCookie = (res, user) => {
   return token;
 };
 
-// backend/utils/auth.js
-// ...
+/************************************************************************************************************************************************ */
+//*                                     RESTORE-USER
+/************************************************************************************************************************************************/
 
 const restoreUser = (req, res, next) => {
     // token parsed from cookies
@@ -66,8 +73,9 @@ const restoreUser = (req, res, next) => {
     });
   };
 
-  // backend/utils/auth.js
-// ...
+/************************************************************************************************************************************************ */
+//*                                     CHECK CURRENT USER/THROW ERROR IF NO USER (checks autherization)
+/************************************************************************************************************************************************/
 
 // If there is no current user, return an error
 const requireAuth = function (req, _res, next) {
@@ -79,5 +87,7 @@ const requireAuth = function (req, _res, next) {
     err.status = 401;
     return next(err);
   }
+
+/************************************************************************************************************************************************/
 
 module.exports = { setTokenCookie, restoreUser, requireAuth };

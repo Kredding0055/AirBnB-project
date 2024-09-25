@@ -1,18 +1,22 @@
 const express = require('express');
 require('express-async-errors');
 const morgan = require('morgan');
+//Cross-Origin Resource Sharing - allows servers to indicate valid origins from which resources may be loaded onto browser. 
 const cors = require('cors');
+//CSRF Setup
 const csurf = require('csurf');
-const helmet = require('helmet');
+//parses the cookie header sent by browser
 const cookieParser = require('cookie-parser');
 
+const helmet = require('helmet');
+const { restoreUser } = require('./utils/auth');
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 
 const app = express();
 
 app.use(morgan('dev'));
-
+app.use(restoreUser);
 app.use(cookieParser());
 app.use(express.json());
 
@@ -33,8 +37,8 @@ if (!isProduction) {
   app.use(
     csurf({
       cookie: {
-        secure: isProduction,
-        sameSite: isProduction && "Lax",
+        secure: isProduction, // <-----------Should be set to development?????
+        sameSite: isProduction && "Lax",// <-----------Should be set to development?????
         httpOnly: true
       }
     })

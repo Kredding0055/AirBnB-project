@@ -16,7 +16,7 @@ module.exports = {
         state: "test",
         country: "test",
         lat: 123.1,
-        long: 123.1,
+        lng: 123.1,
         name: "test",
         description: "test",
         price: 123.1

@@ -1,9 +1,14 @@
 // backend/utils/auth.js
+//JSON Web Token - used for securely transmitting information between parties as a JSON object
 const jwt = require('jsonwebtoken');
+//contains settings for JWT, such as secret keys, expiration times, or other JWT-related configurations. loaded from config/index.js folder
 const { jwtConfig } = require('../config');
+//imports values from config/index.js
+const { secret, expiresIn } = jwtConfig;
+//imports the User model
 const { User } = require('../db/models');
 
-const { secret, expiresIn } = jwtConfig;
+
 
 // backend/utils/auth.js
 // ...

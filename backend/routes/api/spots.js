@@ -42,7 +42,7 @@ const validateSpot = [
 ];
 
 //create a spot
-router.post('/', validateSpot, async (req, res,) => {
+router.post('/other', validateSpot, async (req, res,) => {
     console.log(req.body)
     //get all info from req body
     const {address, city, state, country, name, description, lat, lng, price} = req.body;
@@ -63,9 +63,33 @@ router.post('/', validateSpot, async (req, res,) => {
     res.json(newSpot)
 })
 
-router.get('/test3', async (req,res) => {
-    
-    res.json({message:'hello'})
+
+
+//*test url
+//import the model
+const {testfile2}=require('../../db/models');
+//set up url
+router.post('/test1', async (req,res) => {
+    console.log(req.body)
+    // authenticate 
+
+    //grab data from res body
+    const {message} = req.body
+
+    //error code
+    if(!message){
+      res.status(400)
+      res.json({error: "invalid message"})
+    }    
+
+    //create new instance of class
+    const newTest = await testfile2.create({
+      message
+    })
+
+    //send response
+    res.status(200)
+    res.json(newTest)
 })
 
 router.get('/', async (req, res, next) => {
@@ -75,16 +99,17 @@ router.get('/', async (req, res, next) => {
     res.json(allSpots)
 })
 /* test fetch
-fetch('/api/users', {
+fetch('/api/spots/test1', {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
       "XSRF-TOKEN": "fWwuoKLy-LxSZ0ezNPW19aNKulQY_LB7ljs0"
     },
-    body: JSON.stringify({address: "124", city: "test", state: "test", country: "test", name: "test", description: "test", lat: "test", lng: "test", price: "test"
+    body: JSON.stringify({address: "124", city: "test", state: "test", country: "test", name: "test", description: "test", lat: 12, lng: 12, price: 12
     })
   }).then(res => res.json()).then(data => console.log(data));
 */
+
 router.get('/:id', async (req, res, next) => {
   const spotId = await Spot.findByPk(req.params.id);
   console.log(req.params.id)

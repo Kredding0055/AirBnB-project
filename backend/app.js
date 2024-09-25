@@ -1,5 +1,11 @@
+/************************************************************************************************************************************************ */
+//*                                     IMPORTS AND REQUIREMENTS
+/************************************************************************************************************************************************/
+
+//imports the Express.js framework, which is used to create web applications and APIs in Node.js
 const express = require('express');
-require('express-async-errors');
+
+require('express-async-errors');//! <-----------is this correct code ???????????????????????????
 const morgan = require('morgan');
 //Cross-Origin Resource Sharing - allows servers to indicate valid origins from which resources may be loaded onto browser. 
 const cors = require('cors');

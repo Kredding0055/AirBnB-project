@@ -130,6 +130,7 @@ router.get('/:id', async (req, res, next) => {
   const spotId = await Spot.findByPk(req.params.id);
   console.log(req.params.id)
   
+  res.json(spotId)
 })
 
 /************************************************************************************************************************************************/

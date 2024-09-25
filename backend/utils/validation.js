@@ -1,8 +1,15 @@
-// backend/utils/validation.js
+/************************************************************************************************************************************************ */
+//*                                     IMPORTS AND REQUIREMENTS
+/************************************************************************************************************************************************/
+
+//used to collect validation errors from the request
 const { validationResult } = require('express-validator');
 
-// middleware for formatting errors from express-validator middleware
-// (to customize, see express-validator's documentation)
+/************************************************************************************************************************************************ */
+//*                                     HANDLING VALIDATION ERRORS
+/************************************************************************************************************************************************/
+
+// Check if there are any validation errors, format them into a standardized structure, Create and pass along error object w/ details about validation failures
 const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
 
@@ -20,6 +27,8 @@ const handleValidationErrors = (req, _res, next) => {
   }
   next();
 };
+
+/************************************************************************************************************************************************/
 
 module.exports = {
   handleValidationErrors

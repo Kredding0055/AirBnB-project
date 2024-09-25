@@ -15,14 +15,14 @@ const csurf = require('csurf');
 const cookieParser = require('cookie-parser');
 
 const helmet = require('helmet');
-const { restoreUser } = require('./utils/auth');
+
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 
 const app = express();
 
 app.use(morgan('dev'));
-app.use(restoreUser);
+
 app.use(cookieParser());
 app.use(express.json());
 

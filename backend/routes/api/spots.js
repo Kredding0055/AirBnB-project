@@ -1,15 +1,27 @@
+/************************************************************************************************************************************************ */
+//*                                     IMPORTS AND REQUIREMENTS
+/************************************************************************************************************************************************/
+
+//imports the Express.js framework, which is used to create web applications and APIs in Node.js
 const express = require('express')
+//creates a new router for this route
 const router = express.Router();
+//Used for hashing passwords
 const bcrypt = require('bcryptjs');
+//imports key functions from utils/auth.js. setTokenCookie creates JWT token, requireAuth verifies 'user' from a token
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
+//used for validating and sanitizing request data
 const { check } = require('express-validator');
+//imports a function for handling errors
 const { handleValidationErrors } = require('../../utils/validation');
+//imports the Spot model
 const { Spot } = require('../../db/models');
 
+/************************************************************************************************************************************************ */
+//*                                     CREATE A SPOT 
+/************************************************************************************************************************************************/
 
-
-
-//create spot middleware
+// middleware
 const validateSpot = [
     check('address')
       .exists({ checkFalsy: true })
@@ -63,13 +75,13 @@ router.post('/other', validateSpot, async (req, res,) => {
     res.json(newSpot)
 })
 
-
+/************************************************************************************************************************************************/
 
 //*test url
 //import the model
 const {testfile2}=require('../../db/models');
 //set up url
-router.post('/test1', async (req,res) => {
+router.post('/test1',requireAuth, async (req,res) => {
     console.log(req.body)
     // authenticate 
 
@@ -110,10 +122,16 @@ fetch('/api/spots/test1', {
   }).then(res => res.json()).then(data => console.log(data));
 */
 
+/************************************************************************************************************************************************ */
+//*                                     GET DETAILS OF A SPOT FROM AN ID
+/************************************************************************************************************************************************/
+
 router.get('/:id', async (req, res, next) => {
   const spotId = await Spot.findByPk(req.params.id);
   console.log(req.params.id)
   
 })
+
+/************************************************************************************************************************************************/
 
 module.exports = router;

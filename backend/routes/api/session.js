@@ -1,21 +1,42 @@
-// backend/routes/api/session.js
+/************************************************************************************************************************************************ */
+//*                                     IMPORTS AND REQUIREMENTS
+/************************************************************************************************************************************************/
+//imports the Express.js framework, which is used to create web applications and APIs in Node.js
 const express = require('express')
+//importing Operator object - used for complex queries.
 const { Op } = require('sequelize');
+//Used for hashing passwords
 const bcrypt = require('bcryptjs');
-
+//imported from utils/auth.js. setTokenCookie creates JWT token,  restoreUsers verifies the token sent in the request
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
+//Import the user model
 const { User } = require('../../db/models');
-
+//used for validating and sanitizing request data
 const { check } = require('express-validator');
+//imports a function for handling errors
 const { handleValidationErrors } = require('../../utils/validation');
-
+//creates a new router for this route
 const router = express.Router();
 
-router.get('/test', async (req, res, next) => {
-  res.json({message:"hello"})
-})
+/************************************************************************************************************************************************ */
+//*                                     MIDDDLEWARE
+/************************************************************************************************************************************************/
+
+const validateLogin = [
+  check('credential')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Please provide a valid email or username.'),
+  check('password')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a password.'),
+  handleValidationErrors
+];
   
-// Log out
+/************************************************************************************************************************************************ */
+//*                                     LOGOUT
+/************************************************************************************************************************************************/
+
 router.delete(
   '/',
   (_req, res) => {
@@ -24,7 +45,10 @@ router.delete(
   }
 );
 
-// Restore session user
+/************************************************************************************************************************************************ */
+//*                                     RESTORE SESSION USER
+/************************************************************************************************************************************************/
+
 router.get(
   '/',
   (req, res) => {
@@ -42,18 +66,10 @@ router.get(
   }
 );  
 
-const validateLogin = [
-  check('credential')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
-  check('password')
-    .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
-  handleValidationErrors
-];
+/************************************************************************************************************************************************ */
+//*                                     LOGIN
+/************************************************************************************************************************************************/
 
-// Log in
 router.post(
   '/',
   async (req, res, next) => {
@@ -90,6 +106,7 @@ router.post(
   }
 );
 
+/************************************************************************************************************************************************/
 
 /* 
 fetch('/api/session', { 
@@ -102,5 +119,7 @@ fetch('/api/session', {
     })
   }).then(res => res.json()).then(data => console.log(data));
 */
+
+/************************************************************************************************************************************************/
 
 module.exports = router;

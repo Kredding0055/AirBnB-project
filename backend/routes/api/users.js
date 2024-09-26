@@ -70,7 +70,6 @@ const validateSignup = [
       };
   
       await setTokenCookie(res, safeUser);
-      console.log('test:', req.body)
       return res.json({
         user: safeUser
       });

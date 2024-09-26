@@ -27,6 +27,8 @@ module.exports = {
         lat: 12,
         lng: 12,
         price: 12,
+        avgRating: 4.5,
+        previewImage: "image"
       },
     ])
     /**

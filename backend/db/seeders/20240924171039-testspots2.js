@@ -19,7 +19,9 @@ module.exports = {
         lng: 123.1,
         name: "test",
         description: "test",
-        price: 123.1
+        price: 123.1,
+        avgRating: 4.5,
+        previewImage: "image"
       }
     );
   },

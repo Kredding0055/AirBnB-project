@@ -19,21 +19,6 @@ const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 /************************************************************************************************************************************************ */
-//*                                     MIDDLEWARE
-/************************************************************************************************************************************************/
-
-const validateLogin = [
-  check('credential')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
-  check('password')
-    .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
-  handleValidationErrors
-];
-  
-/************************************************************************************************************************************************ */
 //*                                     LOGOUT
 /************************************************************************************************************************************************/
 
@@ -87,10 +72,24 @@ router.get(
 //*                                     LOGIN
 /************************************************************************************************************************************************/
 
+//middleware
+const validateLogin = [
+  check('credential')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage("Email or username is required"),
+  check('password')
+    .exists({ checkFalsy: true })
+    .withMessage("Password is required"),
+  handleValidationErrors
+];
+
+//login
 router.post(
     '/',
     validateLogin,
     async (req, res, next) => {
+      
       const { credential, password } = req.body;
   
       const user = await User.unscoped().findOne({
@@ -106,7 +105,7 @@ router.post(
         const err = new Error('Login failed');
         err.status = 401;
         err.title = 'Login failed';
-        err.errors = { credential: 'The provided credentials were invalid.' };
+        err.message = 'Invalid Credentials';
         return next(err);
       }
   
@@ -114,6 +113,8 @@ router.post(
         id: user.id,
         email: user.email,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName
       };
   
       await setTokenCookie(res, safeUser);
@@ -133,6 +134,25 @@ router.delete(
     return res.json({ message: 'success' });
   }
 );
+
+// Restore session user
+router.get(
+  '/',
+  (req, res) => {
+    const { user } = req;
+    if (user) {
+      const safeUser = {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      };
+      return res.json({
+        user: safeUser
+      });
+    } else return res.json({ user: null });
+  }
+);  
+
 
 /* 
 fetch('/api/session', { 

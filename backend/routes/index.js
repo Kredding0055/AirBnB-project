@@ -6,8 +6,12 @@
 const express = require('express');
 //creates a new router for this route
 const router = express.Router();
-
+//gets api folder
 const apiRouter = require('./api');
+
+/************************************************************************************************************************************************ */
+//*                                     ROUTER CONNECTIONS
+/************************************************************************************************************************************************/
 
 router.use('/api', apiRouter);
 

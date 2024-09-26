@@ -43,7 +43,7 @@ const validateSpot = [
       .withMessage('needs description'),
     check('lat')
       .exists({ checkFalsy: true })
-      .withMessage('needs lattitude'),
+      .withMessage('needs latitude'),
     check('lng')
       .exists({ checkFalsy: true })
       .withMessage('needs longitude'),
@@ -54,7 +54,7 @@ const validateSpot = [
 ];
 
 //create a spot
-router.post('/other', validateSpot, async (req, res,) => {
+router.post('/', validateSpot, async (req, res,) => {
     console.log(req.body)
     //get all info from req body
     const {address, city, state, country, name, description, lat, lng, price} = req.body;

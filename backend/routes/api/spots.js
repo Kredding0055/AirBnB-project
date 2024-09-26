@@ -76,7 +76,7 @@ const validateSpot = [
       .withMessage('needs description'),
     check('lat')
       .exists({ checkFalsy: true })
-      .withMessage('needs lattitude'),
+      .withMessage('needs latitude'),
     check('lng')
       .exists({ checkFalsy: true })
       .withMessage('needs longitude'),

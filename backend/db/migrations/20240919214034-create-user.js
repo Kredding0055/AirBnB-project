@@ -1,6 +1,6 @@
 'use strict';
 
-const { all } = require("../../routes/api/spots");
+// const { all } = require("../../routes/api/spots");
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {

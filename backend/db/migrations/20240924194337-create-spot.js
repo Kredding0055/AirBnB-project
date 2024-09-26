@@ -56,7 +56,6 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
-<<<<<<< HEAD
       userId: {
         type: Sequelize.INTEGER,
         references: {
@@ -65,8 +64,6 @@ module.exports = {
         },
         onDelete: 'CASCADE'
       },
-=======
->>>>>>> createSpot
     });
   },
   async down(queryInterface, Sequelize) {

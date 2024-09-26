@@ -50,7 +50,6 @@ const validateSignup = [
     handleValidationErrors
   ];
 
-
 router.get('/:id', async (req, res, next) => {
   const userById = await User.findByPk(req.params.id);
   console.log(userById)
@@ -64,6 +63,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 //validate user creation
+//sign up
   router.post(
     '/',
     validateSignup,

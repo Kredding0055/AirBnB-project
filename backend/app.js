@@ -4,8 +4,9 @@
 
 //imports the Express.js framework, which is used to create web applications and APIs in Node.js
 const express = require('express');
-//
-require('express-async-errors');//! <-----------is this correct code ???????????????????????????
+//import and apply the express-async-errors package
+require('express-async-errors');
+//automatically logs info about incoming HTTP requests, can log response times,. Debugging aid
 const morgan = require('morgan');
 //Cross-Origin Resource Sharing - allows servers to indicate valid origins from which resources may be loaded onto browser. 
 const cors = require('cors');
@@ -30,12 +31,13 @@ const app = express();
 //*                                     BASIC APP.USE
 /************************************************************************************************************************************************/
 
+//mounts the routes defined in routes module to Express application
 app.use(routes); 
-
+//middleware for HTTP request logging.
 app.use(morgan('dev'));
-
+//sets up the cookie-parser middleware.
 app.use(cookieParser());
-
+//parses incoming requests with JSON payloads, gives access to parsed data in req.body
 app.use(express.json());
 
 /************************************************************************************************************************************************ */
@@ -54,11 +56,13 @@ app.use(
 /************************************************************************************************************************************************/
 
 //applies the csurf middleware to all routes in the application.
+//Secure primarily protects against network-based attacks.
+//SameSite primarily protects against cross-site request forgery (CSRF) attacks.
   app.use(
     csurf({
       cookie: { //tells csurf to use cookies for storing the CSRF token, rather than sessions.
-        secure: isProduction, // If isProduction is true, this sets the Secure flag on the cookie, meaning it will only be sent over HTTPS. 
-        sameSite: isProduction && "Lax",//"lax" - Cookies are sent when users navigate to the origin site from external sites.
+        secure: isProduction, // Ensures the cookie is only transmitted over secure HTTPS connections (connection security), If isProduction is true sets the Secure flag on the cookie 
+        sameSite: isProduction && "Lax",//Controls how cookies are sent with cross-site requests, "lax" - Cookies are sent when users navigate to the origin site from external sites.
         httpOnly: true //cookie will only be sent in http
       }
     })

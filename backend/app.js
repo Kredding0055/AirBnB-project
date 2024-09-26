@@ -4,7 +4,7 @@
 
 //imports the Express.js framework, which is used to create web applications and APIs in Node.js
 const express = require('express');
-
+//
 require('express-async-errors');//! <-----------is this correct code ???????????????????????????
 const morgan = require('morgan');
 //Cross-Origin Resource Sharing - allows servers to indicate valid origins from which resources may be loaded onto browser. 
@@ -13,53 +13,70 @@ const cors = require('cors');
 const csurf = require('csurf');
 //parses the cookie header sent by browser
 const cookieParser = require('cookie-parser');
-
+//protects Express app by setting various security related HTTP headers
 const helmet = require('helmet');
-
+//used to handle validation errors
+const { ValidationError } = require('sequelize');
+//used to determine the current running environment of the application 
 const { environment } = require('./config');
+//used to conditionally apply "production" or "development"
 const isProduction = environment === 'production';
-
+//imports routes folder
+const routes = require('./routes');
+//creates an instance of an Express application.
 const app = express();
+
+/************************************************************************************************************************************************ */
+//*                                     BASIC APP.USE
+/************************************************************************************************************************************************/
+
+app.use(routes); 
 
 app.use(morgan('dev'));
 
 app.use(cookieParser());
+
 app.use(express.json());
 
-// Security Middleware
-if (!isProduction) {
-    // enable cors only in development
-    app.use(cors());
-  }
-  
-  // helmet helps set a variety of headers to better secure your app
-  app.use(
-    helmet.crossOriginResourcePolicy({
-      policy: "cross-origin"
-    })
-  );
-  
-  // Set the _csrf token and create req.csrfToken method
+/************************************************************************************************************************************************ */
+//*                                     CROSS ORIGIN POLICY
+/************************************************************************************************************************************************/
+
+app.use(
+  helmet.crossOriginResourcePolicy({ // function allows control of which origins can embed your resources (EX:images, scripts, etc.)
+    policy: "cross-origin" //cross origin means the origin of the resource is from a different protocol, domain or port number
+  })                      //ex: images loaded from another site 
+);
+
+/************************************************************************************************************************************************ */
+//*                                     MIDDLEWARE FOR CSRF PROTECTION 
+//*                          (Set the _csrf token and create req.csrfToken method)
+/************************************************************************************************************************************************/
+
+//applies the csurf middleware to all routes in the application.
   app.use(
     csurf({
-      cookie: {
-        secure: isProduction, // <-----------Should be set to development?????
-        sameSite: isProduction && "Lax",// <-----------Should be set to development?????
-        httpOnly: true
+      cookie: { //tells csurf to use cookies for storing the CSRF token, rather than sessions.
+        secure: isProduction, // If isProduction is true, this sets the Secure flag on the cookie, meaning it will only be sent over HTTPS. 
+        sameSite: isProduction && "Lax",//"lax" - Cookies are sent when users navigate to the origin site from external sites.
+        httpOnly: true //cookie will only be sent in http
       }
     })
   );
 
-  // backend/app.js
-const routes = require('./routes');
+/************************************************************************************************************************************************ */
+//*                                     ENABLING CORS ONLY IN DEVELOPMENT
+/************************************************************************************************************************************************/
 
-// ...
+//implemented by browsers to restrict web pages from making requests to a different web page.
+if (!isProduction) { // checks if app is not running in production mode
+    app.use(cors());
+  }
 
-app.use(routes); // Connect all the routes
+/************************************************************************************************************************************************ */
+//*                                     CATCH UNHANDLED REQUESTS/FOWARD TO ERROR HANDLER
+/************************************************************************************************************************************************/
 
-// backend/app.js
-// ...
-// Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = "Resource Not Found";
@@ -68,13 +85,10 @@ app.use((_req, _res, next) => {
   next(err);
 });
 
-// backend/app.js
-// ...
-const { ValidationError } = require('sequelize');
+/************************************************************************************************************************************************ */
+//*                                     PROCESS SEQUELIZE ERRORS
+/************************************************************************************************************************************************/
 
-// ...
-
-// Process sequelize errors
 app.use((err, _req, _res, next) => {
   // check if error is a Sequelize error:
   if (err instanceof ValidationError) {
@@ -88,9 +102,10 @@ app.use((err, _req, _res, next) => {
   next(err);
 });
 
-// backend/app.js
-// ...
-// Error formatter
+/************************************************************************************************************************************************ */
+//*                                     ERROR FORMATTER
+/************************************************************************************************************************************************/
+
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
@@ -101,5 +116,7 @@ app.use((err, _req, res, _next) => {
     stack: isProduction ? null : err.stack
   });
 });
+
+/************************************************************************************************************************************************/
 
 module.exports = app;

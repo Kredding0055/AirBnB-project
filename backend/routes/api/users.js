@@ -94,7 +94,7 @@ const validateSignup = [
       };
   
       await setTokenCookie(res, safeUser);
-      return res.status(201).json({
+      return res.json({
         user: safeUser
       });
     }

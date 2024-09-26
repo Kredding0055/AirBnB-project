@@ -1,4 +1,5 @@
 // backend/config/database.js
+require('dotenv').config();
 const config = require('./index');
 
 module.exports = {

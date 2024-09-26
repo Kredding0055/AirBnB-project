@@ -26,11 +26,13 @@ const validateSignup = [
     check('email')
       .exists({ checkFalsy: true })
       .isEmail()
-      .withMessage('Please provide a valid email.'),
+      .withMessage("Invalid email"),
     check('username')
-      .exists({ checkFalsy: true })
       .isLength({ min: 4 })
       .withMessage('Please provide a username with at least 4 characters.'),
+    check('username')
+      .exists({ checkFalsy: true })
+      .withMessage("Username is required"),
     check('username')
       .not()
       .isEmail()
@@ -41,12 +43,10 @@ const validateSignup = [
       .withMessage('Password must be 6 characters or more.'),
     check('firstName')
       .exists({ checkFalsy: true })
-      .isLength({min: 1})
-      .withMessage('Please provide a valid first name'),
+      .withMessage("First Name is required"),
     check('lastName')
       .exists({ checkFalsy: true })
-      .isLength({min: 1})
-      .withMessage('Please provide a valid last name.'),
+      .withMessage("Last Name is required"),
     handleValidationErrors
   ];
 
@@ -54,24 +54,47 @@ const validateSignup = [
   router.post(
     '/',
     validateSignup,
-    async (req, res) => {
+    async (req, res, next) => {
 
-    console.log("REQ BODY: ", req.body)
       const { email, password, username, firstName, lastName } = req.body;
+
+      const emailCheck = await User.findOne({
+        where: {
+          email: email
+        }
+      })
+      const userNameCheck = await User.findOne({
+        where:{
+          username: username
+        }
+      })
+
+      if (emailCheck) { //! <----------------------------Title needs to be removed, ask prof??????????????????
+        const err = new Error("User already exists");
+        err.status = 500;
+        err.errors = { email: "User with that email already exists" };
+        return next(err);
+      }else if(userNameCheck) {
+        const err = new Error("User already exists");
+        err.status = 500;
+        err.errors = { email: "User with that username already exists" };
+        return next(err);
+      }
+
+
       const hashedPassword = bcrypt.hashSync(password);
-      const user = await User.create({ firstName, lastName,email, username, hashedPassword  });
+      const user = await User.create({ firstName, lastName, email, username, hashedPassword});
   
       const safeUser = {
+        id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
-        id: user.id,
         email: user.email,
         username: user.username,
       };
   
       await setTokenCookie(res, safeUser);
-      console.log('test:', req.body)
-      return res.json({
+      return res.status(201).json({
         user: safeUser
       });
     }

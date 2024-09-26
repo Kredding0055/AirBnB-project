@@ -51,22 +51,6 @@ router.get(
       } else return res.json({ user: null });
     }]
 );
-// router.get(
-//   '/',
-//   (req, res) => {
-//     const { user } = req;
-//     if (user) {
-//       const safeUser = {
-//         id: user.id,
-//         email: user.email,
-//         username: user.username,
-//       };
-//       return res.json({
-//         user: safeUser
-//       });
-//     } else return res.json({ user: null });
-//   }
-// );  
 
 /************************************************************************************************************************************************ */
 //*                                     LOGIN
@@ -124,47 +108,6 @@ router.post(
       });
     }
   );
-
-  
-// Log out
-router.delete(
-  '/',
-  (_req, res) => {
-    res.clearCookie('token');
-    return res.json({ message: 'success' });
-  }
-);
-
-// Restore session user
-router.get(
-  '/',
-  (req, res) => {
-    const { user } = req;
-    if (user) {
-      const safeUser = {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-      };
-      return res.json({
-        user: safeUser
-      });
-    } else return res.json({ user: null });
-  }
-);  
-
-
-/* 
-fetch('/api/session', { 
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json",
-      "XSRF-TOKEN": "fWwuoKLy-LxSZ0ezNPW19aNKulQY_LB7ljs0"
-    },
-    body: JSON.stringify({ credential:'demo@user.io', password: 'password'
-    })
-  }).then(res => res.json()).then(data => console.log(data));
-*/
 
 /************************************************************************************************************************************************/
 

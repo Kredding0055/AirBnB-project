@@ -3,7 +3,7 @@
 /************************************************************************************************************************************************/
 
 //imports the Express.js framework, which is used to create web applications and APIs in Node.js
-const express = require('express')
+const express = require('express');
 //creates a new router for this route
 const router = express.Router();
 //Used for hashing passwords

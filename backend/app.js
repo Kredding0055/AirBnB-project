@@ -1,10 +1,20 @@
+/************************************************************************************************************************************************ */
+//*                                     IMPORTS AND REQUIREMENTS
+/************************************************************************************************************************************************/
+
+//imports the Express.js framework, which is used to create web applications and APIs in Node.js
 const express = require('express');
-require('express-async-errors');
+
+require('express-async-errors');//! <-----------is this correct code ???????????????????????????
 const morgan = require('morgan');
+//Cross-Origin Resource Sharing - allows servers to indicate valid origins from which resources may be loaded onto browser. 
 const cors = require('cors');
+//CSRF Setup
 const csurf = require('csurf');
-const helmet = require('helmet');
+//parses the cookie header sent by browser
 const cookieParser = require('cookie-parser');
+
+const helmet = require('helmet');
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
@@ -33,8 +43,8 @@ if (!isProduction) {
   app.use(
     csurf({
       cookie: {
-        secure: isProduction,
-        sameSite: isProduction && "Lax",
+        secure: isProduction, // <-----------Should be set to development?????
+        sameSite: isProduction && "Lax",// <-----------Should be set to development?????
         httpOnly: true
       }
     })

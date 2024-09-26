@@ -1,0 +1,16 @@
+npx sequelize-cli model:generate --name <ModelName> --attributes
+
+npx dotenv sequelize-cli db:migrate
+
+npx dotenv sequelize-cli db:migrate:undo # rollback one migration 
+npx dotenv sequelize-cli db:migrate:undo:all # rollback all migrations
+
+npx dotenv sequelize-cli db:seed:all
+
+npx dotenv sequelize-cli db:seed:undo # rollback one seed 
+npx dotenv sequelize-cli db:seed:undo:all # rollback all seeds
+
+npx sequelize-cli model:generate --name Spots --attributes address:string,city:string,state:string
+
+,country:string,
+lat:decimal,long:decimal,name:string,description:string,price:decimal,createdAt:date,updatedAt:date
